@@ -1,0 +1,54 @@
+<div class="container">
+  <h1>New Person</h1>
+  <form (submit)="createperson()">
+    <div class="row">
+      <div class="col-md-3 col-sm-6">
+        <label for="name">Name</label>
+        <input type="text" [(ngModel)]="newperson.name" name="name" class="form-control">
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <label for="phone">Phone:</label>
+        <input type="text" [(ngModel)]="newperson.phone" name="phone" class="form-control">
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <label for="dob">Date of birth</label>
+        <input type="date" [(ngModel)]="newperson.dob" name="dob" class="form-control">
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <label for="sex">Sex:</label>
+        <br/>
+        <input type="radio" name="sex" value="male" [(ngModel)]="newperson.sex"> Male &nbsp;
+        <input type="radio" name="sex" value="female" [(ngModel)]="newperson.sex"> Female
+      </div>
+
+    </div>
+    <div class="row" style="padding: 20px 0px">
+      <div class="col-md-3 col-sm-6">
+        <label for="skill">Skill</label>
+        <div class="row">
+          <div class="col-xs-6">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="">Angular</label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="">Java</label>
+            </div>
+          </div>
+          <div class="col-xs-6">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="">React</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8 col-sm-6">
+        <label for="note">Note:</label>
+        <textarea class="form-control" [(ngModel)]="newperson.note" name="age" id="note"></textarea>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-success">Add</button>
+  </form>
+</div>

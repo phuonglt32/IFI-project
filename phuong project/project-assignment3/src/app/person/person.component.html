@@ -1,0 +1,35 @@
+<h1>Person <a routerLink="newperson" class="btn btn-sm btn-success">+</a></h1>
+<div class="table-responsive">
+  <table class="table table-hover table-striped table-bordered table-center">
+    <tr>
+    <th>
+      Id Person
+    </th>
+    <th>
+      Name Person
+    </th>
+    <th>
+      Age
+    </th>
+    <th>
+      Action
+    </th>
+    </tr>
+    <tr *ngFor="let person of persons | async">
+      <td>
+        {{person.id}}
+      </td>
+      <td>
+        {{person.name}}
+      </td>
+      <td>
+        {{person.age}}
+      </td>
+      <td>
+
+        <button (click)="delete(person)" type="button" class="btn btn-danger">Delete</button>
+        <a [routerLink]="['/personproject', person.id]" type="button" class="btn btn-default">Projet Role</a>
+        </td>
+    </tr>
+  </table>
+</div>
