@@ -1,5 +1,5 @@
 package com.phuong.entities;
-// Generated Nov 8, 2017 10:29:07 PM by Hibernate Tools 5.2.5.Final
+// Generated Nov 9, 2017 9:42:06 AM by Hibernate Tools 5.2.5.Final
 
 import java.util.Date;
 import java.util.HashSet;
@@ -25,25 +25,28 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class PhuongPersonal implements java.io.Serializable {
 
 	private Integer id;
-	private String phone;
-	private String name;
 	private Date dob;
-	private Byte sex;
-	private String skill;
+	private String name;
 	private String note;
+	private String phone;
+	private String sex;
+	private String skill;
+	private String image;
+	
+
 	private Set<PhuongPersonalProjectRole> phuongPersonalProjectRoles = new HashSet<PhuongPersonalProjectRole>(0);
 
 	public PhuongPersonal() {
 	}
 
-	public PhuongPersonal(String phone, String name, Date dob, Byte sex, String skill, String note,
+	public PhuongPersonal(Date dob, String name, String note, String phone, String sex, String skill,
 			Set<PhuongPersonalProjectRole> phuongPersonalProjectRoles) {
-		this.phone = phone;
-		this.name = name;
 		this.dob = dob;
+		this.name = name;
+		this.note = note;
+		this.phone = phone;
 		this.sex = sex;
 		this.skill = skill;
-		this.note = note;
 		this.phuongPersonalProjectRoles = phuongPersonalProjectRoles;
 	}
 
@@ -54,27 +57,8 @@ public class PhuongPersonal implements java.io.Serializable {
 	public Integer getId() {
 		return this.id;
 	}
-
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	@Column(name = "phone")
-	public String getPhone() {
-		return this.phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	@Column(name = "name", length = 100)
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	@Temporal(TemporalType.DATE)
@@ -87,12 +71,39 @@ public class PhuongPersonal implements java.io.Serializable {
 		this.dob = dob;
 	}
 
+	@Column(name = "name", length = 100)
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Column(name = "note", length = 65535)
+	public String getNote() {
+		return this.note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+
+	@Column(name = "phone", length = 13)
+	public String getPhone() {
+		return this.phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 	@Column(name = "sex")
-	public Byte getSex() {
+	public String getSex() {
 		return this.sex;
 	}
 
-	public void setSex(Byte sex) {
+	public void setSex(String sex) {
 		this.sex = sex;
 	}
 
@@ -104,14 +115,14 @@ public class PhuongPersonal implements java.io.Serializable {
 	public void setSkill(String skill) {
 		this.skill = skill;
 	}
-
-	@Column(name = "note", length = 65535)
-	public String getNote() {
-		return this.note;
+	
+	@Column(name = "image", length = 100)
+	public String getImage() {
+		return image;
 	}
 
-	public void setNote(String note) {
-		this.note = note;
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	@JsonIgnore

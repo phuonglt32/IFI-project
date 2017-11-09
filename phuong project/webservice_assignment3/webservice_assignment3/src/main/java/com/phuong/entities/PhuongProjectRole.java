@@ -1,5 +1,5 @@
 package com.phuong.entities;
-// Generated Nov 8, 2017 10:29:07 PM by Hibernate Tools 5.2.5.Final
+// Generated Nov 9, 2017 9:42:06 AM by Hibernate Tools 5.2.5.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,17 +22,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class PhuongProjectRole implements java.io.Serializable {
 
 	private Integer id;
-	private String name;
 	private String description;
+	private String name;
 	private Set<PhuongPersonalProjectRole> phuongPersonalProjectRoles = new HashSet<PhuongPersonalProjectRole>(0);
 
 	public PhuongProjectRole() {
 	}
 
-	public PhuongProjectRole(String name, String description,
+	public PhuongProjectRole(String description, String name,
 			Set<PhuongPersonalProjectRole> phuongPersonalProjectRoles) {
-		this.name = name;
 		this.description = description;
+		this.name = name;
 		this.phuongPersonalProjectRoles = phuongPersonalProjectRoles;
 	}
 
@@ -48,15 +48,6 @@ public class PhuongProjectRole implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "name", length = 100)
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	@Column(name = "description", length = 65535)
 	public String getDescription() {
 		return this.description;
@@ -64,6 +55,15 @@ public class PhuongProjectRole implements java.io.Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Column(name = "name", length = 100)
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@JsonIgnore
