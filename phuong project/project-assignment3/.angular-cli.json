@@ -58,6 +58,9 @@
     "class": {
       "spec": false
     },
+    "serve": {
+      "port": 4100
+    },
     "component": {}
   }
 }

@@ -6,8 +6,9 @@ export class person {
       public phone: string,
       public dob: Date,
       public sex: string,
-      private skill: string,
-      private note: string
+      public skill: string,
+      public note: string,
+      public image: string
     ) { }
 
   }

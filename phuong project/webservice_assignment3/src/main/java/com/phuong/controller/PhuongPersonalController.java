@@ -2,6 +2,8 @@ package com.phuong.controller;
 
 import java.util.List;
 
+
+import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,12 +22,14 @@ import com.phuong.entities.PhuongProjectRole;
 import com.phuong.service.PersonalProjectRoleImpl;
 import com.phuong.service.PhuongPersonalService;
 
+
 @RestController
 @RequestMapping("/api") 
 @CrossOrigin(origins = { "*" })
 
 public class PhuongPersonalController {
 
+	public static final Logger log = LoggerFactory.getLogger(PhuongPersonalController.class);
 	@Autowired
 	PhuongPersonalService phuongservice;
 	
@@ -48,12 +52,21 @@ public class PhuongPersonalController {
     }
 	
 	@RequestMapping(value = "/personbyid/{id}", method = RequestMethod.GET)
-    public PhuongPersonal personById(@PathVariable("id") int id) {
-		return phuongservice.findOne(id);
+    public ResponseEntity<?> personById(@PathVariable("id") int id) {
+		PhuongPersonal phuong =  phuongservice.findOne(id);
+		
+		if(phuong == null) {
+			log.error("Error roi");
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}else {
+			log.info("OK nhe");
+			return new ResponseEntity<PhuongPersonal>(phuong,HttpStatus.OK);
+		}
     }
 	
 	@RequestMapping(value = "/person/", method = RequestMethod.POST)
     public PhuongPersonal createTransactionData(@RequestBody PhuongPersonal phuongperson, UriComponentsBuilder ucBuilder) {
+		
 		
 		return phuongservice.save(phuongperson);
         
