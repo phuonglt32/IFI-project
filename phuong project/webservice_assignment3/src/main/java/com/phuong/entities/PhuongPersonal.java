@@ -24,6 +24,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "phuong_personal", catalog = "fresher")
 public class PhuongPersonal implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private Date dob;
 	private String name;
@@ -32,7 +36,7 @@ public class PhuongPersonal implements java.io.Serializable {
 	private String sex;
 	private String skill;
 	private String image;
-	
+	private String email;
 
 	private Set<PhuongPersonalProjectRole> phuongPersonalProjectRoles = new HashSet<PhuongPersonalProjectRole>(0);
 
@@ -40,13 +44,14 @@ public class PhuongPersonal implements java.io.Serializable {
 	}
 
 	public PhuongPersonal(Date dob, String name, String note, String phone, String sex, String skill,
-			Set<PhuongPersonalProjectRole> phuongPersonalProjectRoles) {
+			Set<PhuongPersonalProjectRole> phuongPersonalProjectRoles,String email) {
 		this.dob = dob;
 		this.name = name;
 		this.note = note;
 		this.phone = phone;
 		this.sex = sex;
 		this.skill = skill;
+		this.email = email;
 		this.phuongPersonalProjectRoles = phuongPersonalProjectRoles;
 	}
 
@@ -123,6 +128,15 @@ public class PhuongPersonal implements java.io.Serializable {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+	
+	@Column(name = "email", length = 100)
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@JsonIgnore

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.phuong.entities.PhuongProjectRole;
-import com.phuong.repository.PhuongPersonalRepo;
 import com.phuong.repository.PhuongProjectRoleRepo;
 
 @Service

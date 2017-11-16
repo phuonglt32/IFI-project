@@ -14,4 +14,7 @@ public interface PhuongPersonalRepo extends JpaRepository<PhuongPersonal, Intege
 
 	@Query("SELECT u FROM PhuongProjectRole u,PhuongPersonalProjectRole v WHERE u.id = v.id.idProjectRole AND v.id.idPersonal = ?1")
 	List<PhuongProjectRole> findByIdrole(int id);
+	
+	@Query("SELECT u FROM PhuongPersonal u WHERE u.name like %?1% OR u.email like %?1% OR u.phone like %?1%")
+	List<PhuongPersonal> findByName(String name);
 }

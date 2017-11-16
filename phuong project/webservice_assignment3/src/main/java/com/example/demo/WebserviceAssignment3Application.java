@@ -29,5 +29,10 @@ public class WebserviceAssignment3Application implements CommandLineRunner {
 	public void run(String... arg) throws Exception {
 		//storageService.deleteAll();
 		//storageService.init();
+		
+		//storageService.deleteWithname("anh3.png");
+		
+		System.out.println("Present Project Directory : "+ System.getProperty("user.dir").replace("\\", "\\\\"));
+
 	}
 }

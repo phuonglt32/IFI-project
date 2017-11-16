@@ -8,7 +8,8 @@ export class person {
       public sex: string,
       public skill: string,
       public note: string,
-      public image: string
+      public image: string,
+      public email: string
     ) { }
 
   }

@@ -1,0 +1,68 @@
+<div class="box box-success">
+  <div class="box-body">
+    <h1>Person of role
+    </h1>
+    <div class="table-responsive">
+      <table class="table table-hover table-striped table-bordered table-center" id="bang1">
+        <tr>
+          <th>
+            Avatar
+          </th>
+          <th>
+            Name Person
+          </th>
+          <th>
+            Phone
+          </th>
+          <th>
+            Email
+          </th>
+          <th>
+            Project name
+          </th>
+          <th>
+            Project role
+          </th>
+          <th>
+            Start date
+          </th>
+          <th>
+            End date
+          </th>
+          <th>
+            Action
+          </th>
+        </tr>
+        <tr *ngFor="let person of persons | async">
+          <td>
+            <img style="width: 50px;" src="http://localhost:8080/files/{{person.phuongPersonal.image}}" />
+          </td>
+          <td>
+            {{person.phuongPersonal.name}}
+          </td>
+          <td>
+            {{person.phuongPersonal.phone}}
+          </td>
+          <td>
+            {{person.phuongPersonal.email}}
+          </td>
+          <td>
+            {{person.projectName}}
+          </td>
+          <td>
+            {{person.phuongProjectRole.name}}
+          </td>
+          <td>
+            {{person.startDate}}
+          </td>
+          <td>
+            {{person.endDate}}
+          </td>
+          <td>
+            <button (click)="delete(person)" type="button" class="btn btn-xs btn-danger" title="remove">
+              <span class="glyphicon glyphicon-remove"></span>
+            </button>
+          </td>
+        </tr>
+      </table>
+    </div>

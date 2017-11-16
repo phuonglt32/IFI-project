@@ -13,6 +13,7 @@ import { HttpClient, HttpResponse, HttpEventType } from '@angular/common/http';
 
 export class PersonComponent implements OnInit {
 
+  collection = [];
   urlimage = "";
   persons;
   name;
@@ -22,60 +23,76 @@ export class PersonComponent implements OnInit {
   isselectfiles = false;
   selectedFiles: FileList;
   currentFileUpload: File;
+  personselectedarray = [];
   progress: { percentage: number } = { percentage: 0 }
-  constructor(private perservice: Personservice,private uploadService: UploadFileService) {
+  constructor(private perservice: Personservice, private uploadService: UploadFileService) {
     this.persons = perservice.getperson();
-    this.allskill = ['Java','Angular'];
+    this.allskill = ['Java', 'Angular'];
+    this.name = "";
+    for (let i = 1; i <= 100; i++) {
+      this.collection.push(`person ${i}`);
+    }
   }
+
 
   ngOnInit() {
     this.newperson = null;
   }
 
-  selectFile(e){
+  findbyname(){
+    console.log(this.name);
+    if(this.name != ""){
+      this.persons = this.perservice.findpersonbyname(this.name);
+    }else{
+      this.persons = this.perservice.getperson();
+    }
+  }
+
+  selectFile(e) {
     this.newperson.image = e.target.files[0].name;
     this.selectedFiles = e.target.files;
-    if(e.target.files != null){
+    if (e.target.files != null) {
       this.isselectfiles = true;
-    }else{
+    } else {
       this.isselectfiles = false;
     }
     console.log(this.isselectfiles);
   }
 
-  removeimage(){
+  removeimage() {
     this.newperson.image = null;
   }
 
 
-  delete(person){
+  delete(person) {
     if (confirm("Are you sure you want to delete " + person.name + "?")) {
       this.perservice.deleteperson(person).subscribe(
-         data => {
-           // refresh the list
-           this.persons = this.perservice.getperson();
-           return false;
-         },
-         error => {
-           console.error("Error deleting food!");
-           return Observable.throw(error);
-         }
+        data => {
+          // refresh the list
+          this.persons = this.perservice.getperson();
+          return false;
+        },
+        error => {
+          console.error("Error deleting food!");
+          return Observable.throw(error);
+        }
       );
     }
   }
 
-  update(person){
+  update(person) {
     this.check = true;
     this.newperson = person;
   }
 
-  updateperson(){
+  updateperson() {
     console.log(this.newperson);
     this.perservice.createperson(this.newperson).subscribe(
       data => {
         setTimeout(() => {
           alert("Insert success hehe");
-         },2000);
+        }, 2000);
+        this.persons = this.perservice.getperson();
 
         return false;
       },
@@ -83,13 +100,13 @@ export class PersonComponent implements OnInit {
         //console.error("insert Success");
         alert("Fail");
       }
-   );
-   this.uploadfile();
+    );
+    this.uploadfile();
 
 
   }
 
-  uploadfile(){
+  uploadfile() {
     this.currentFileUpload = this.selectedFiles.item(0);
     this.uploadService.pushFileToStorage(this.currentFileUpload).subscribe(event => {
       if (event.type === HttpEventType.UploadProgress) {
@@ -99,5 +116,44 @@ export class PersonComponent implements OnInit {
       }
     })
   }
+
+  checkperson(e, id) {
+    if (e.target.checked) {
+      this.personselectedarray.push(id);
+    } else {
+      let indexid = this.personselectedarray.indexOf(id);
+      this.personselectedarray.splice((indexid), 1);
+    }
+  }
+
+  isPersonSelected(id) {
+    return (this.personselectedarray.indexOf(id) !== -1);
+  }
+
+  deleteselected() {
+    if (this.personselectedarray.length != 0) {
+      if (confirm("Are you sure you want delete all selected person !")){
+        console.log(this.personselectedarray);
+        this.perservice.deletepresonbyids(this.personselectedarray).subscribe(
+          data => {
+            // refresh the list
+            this.persons = this.perservice.getperson();
+            return false;
+          },
+          error => {
+            console.error("Error deleting food!");
+            return Observable.throw(error);
+          }
+        );
+        this.personselectedarray = [];
+      }else{
+
+      }
+    }else{
+      alert("Please select persons you want to delete!");
+    }
+  }
+
+
 
 }

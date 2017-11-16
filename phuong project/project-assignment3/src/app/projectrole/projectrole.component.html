@@ -1,28 +1,86 @@
-<h1>Project Role <a routerLink="newproject" class="btn btn-sm btn-success">+</a></h1>
-<div class="table-responsive">
-  <table class="table table-hover table-striped table-bordered table-center">
-    <tr>
-    <th>
-      Id project role
-    </th>
-    <th>
-      Name project role
-    </th>
-    <th>
-      Action
-    </th>
-    </tr>
-    <tr *ngFor="let project of projectroles | async">
-      <td>
-        {{project.id}}
-      </td>
-      <td>
-        {{project.name}}
-      </td>
-      <td>
+<div class="box box-success">
+  <div class="box-body">
+    <h1>Project Role
+      <a routerLink="newproject" class="btn btn-sm btn-success">
+        <span class="glyphicon glyphicon-plus"></span>
+      </a>
+    </h1>
+    <div class="table-responsive">
+      <table class="table table-hover table-striped table-bordered table-center">
+        <tr>
+          <th style="width: 30px;">
+            Id
+          </th>
+          <th style="text-align: center">
+            Name project role
+          </th>
+          <th>
+            Description
+          </th>
+          <th>
+            Action
+          </th>
+        </tr>
+        <tr *ngFor="let project of projectroles | async | paginate: { itemsPerPage: 10, currentPage: p }">
+          <td>
+            {{project.id}}
+          </td>
+          <td style="text-align: center">
+            {{project.name}}
+          </td>
+          <td>
+            {{project.description}}
+          </td>
+          <td>
+            <button data-toggle="modal" data-target="#modal-default" (click)="update(project)" type="button" class="btn btn-xs btn-warning"
+              title="edit">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </button>
+            <button (click)="delete(project)" type="button" class="btn btn-xs btn-danger" title="remove">
+              <span class="glyphicon glyphicon-remove"></span>
+            </button>
+            <a [routerLink]="['/projectperson', project.id]" type="button" class="btn btn-xs btn-primary" title="person information">
+              <span class="glyphicon glyphicon-th"></span>
+            </a>
+          </td>
+        </tr>
+      </table>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+  </div>
+</div>
 
-        <button (click)="delete(project)" type="button" class="btn btn-danger">Delete</button>
-        </td>
-    </tr>
-  </table>
+<div *ngIf="check" class="modal fade" id="modal-default" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form #projectform="ngForm" (submit)="updateproject()">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+          <h4 class="modal-title">Edit project role</h4>
+        </div>
+        <div class="modal-body">
+          <label for="text">Name of role</label>
+          <input type="text" required #name="ngModel" [(ngModel)]="newproject.name" class="form-control" name="namerole">
+          <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+
+            <div *ngIf="name.errors.required">
+              Name is required.
+            </div>
+          </div>
+          <label for="text">Description</label>
+          <input type="text" [(ngModel)]="newproject.description" class="form-control" name="description">
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+          <button [disabled]="!projectform.form.valid" type="submit" class="btn btn-success">Update</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
 </div>

@@ -5,7 +5,9 @@ export class personproject {
       idPersonal: number,
       idProjectRole: number
     },
-    public projectNam: string
+    public projectName: string,
+    public endDate: Date,
+    public startDate: Date
   ) { }
 
 }

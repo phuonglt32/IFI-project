@@ -15,6 +15,10 @@ import { appRoutes } from './app.router';
 import { NewpersonComponent } from './newperson/newperson.component';
 import { NewprojectComponent } from './newproject/newproject.component';
 import { PersonprojectComponent } from './personproject/personproject.component';
+import { HeaderComponent } from './header/header.component';
+import { RegisterroleComponent } from './registerrole/registerrole.component';
+import { ProjectpersonComponent } from './projectperson/projectperson.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -23,14 +27,18 @@ import { PersonprojectComponent } from './personproject/personproject.component'
     ProjectroleComponent,
     NewpersonComponent,
     NewprojectComponent,
-    PersonprojectComponent
+    PersonprojectComponent,
+    HeaderComponent,
+    RegisterroleComponent,
+    ProjectpersonComponent
   ],
   imports: [
     FormsModule,
     BrowserModule,
     appRoutes,
     HttpModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxPaginationModule
 
   ],
   providers: [Personservice,Projectservice,Personprojectservice,UploadFileService],

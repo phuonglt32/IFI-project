@@ -17,7 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class StorageServiceImpl {
 	Logger log = LoggerFactory.getLogger(this.getClass().getName());
-	private final Path rootLocation = Paths.get("D:\\PhuongGit\\IFI-project\\phuong project\\project-assignment3\\src\\assets\\image");
+	
+	String path = System.getProperty("user.dir").replace("\\", "\\\\");
+	private final Path rootLocation = Paths.get(path+"\\src\\main\\resources\\image");
+	private final Path rootResouce = Paths.get(path+"\\target\\classes\\image");
 
 	public void store(MultipartFile file) {
 		try {
@@ -40,9 +43,35 @@ public class StorageServiceImpl {
 			throw new RuntimeException("FAIL!");
 		}
 	}
+	
+	public Resource loadfileresource(String filename) {
+		try {
+			Path file = rootResouce.resolve(filename);
+			Resource resource = new UrlResource(file.toUri());
+			if (resource.exists() || resource.isReadable()) {
+				return resource;
+			} else {
+				throw new RuntimeException("FAIL!");
+			}
+		} catch (MalformedURLException e) {
+			throw new RuntimeException("FAIL!");
+		}
+	}
 
 	public void deleteAll() {
 		FileSystemUtils.deleteRecursively(rootLocation.toFile());
+	}
+	
+	public void deleteWithname(String name) {
+		String pathroot = rootLocation.toString() +"\\"+name;
+		Path newpath = Paths.get(pathroot);
+		FileSystemUtils.deleteRecursively(newpath.toFile());
+	}
+	
+	public void deleteWithnameResouce(String name) {
+		String pathroot = rootResouce.toString() +"\\"+name;
+		Path newpath = Paths.get(pathroot);
+		FileSystemUtils.deleteRecursively(newpath.toFile());
 	}
 
 	public void init() {

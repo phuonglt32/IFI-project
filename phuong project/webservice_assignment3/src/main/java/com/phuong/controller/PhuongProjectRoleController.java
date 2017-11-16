@@ -14,17 +14,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.phuong.entities.PhuongPersonal;
+import com.phuong.entities.PhuongPersonalProjectRole;
 import com.phuong.entities.PhuongProjectRole;
+import com.phuong.service.PersonalProjectRoleImpl;
 import com.phuong.service.PhuongProjectRoleService;
 
 @RestController
 @RequestMapping("/api") 
-@CrossOrigin(origins = { "http://localhost:4200" })
+@CrossOrigin(origins = { "*" })
 public class PhuongProjectRoleController {
 
 	@Autowired
 	PhuongProjectRoleService phuongprojectrole;
 	
+	@Autowired
+	PersonalProjectRoleImpl personprojectservecive;
 	
 	@RequestMapping(value = "/projectrole/", method = RequestMethod.GET)
     public ResponseEntity<List<PhuongProjectRole>> listAll() {
@@ -36,14 +41,26 @@ public class PhuongProjectRoleController {
         return new ResponseEntity<List<PhuongProjectRole>>(list, HttpStatus.OK);
     }
 	
+	//--------------------get person by id project-------------------------------
+	@RequestMapping(value = "/projectrole/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<PhuongPersonalProjectRole>> listAllPerson(@PathVariable("id") int id) {
+        List<PhuongPersonalProjectRole> list = personprojectservecive.findpersonbyporject(id);
+        if (list.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+        
+        return new ResponseEntity<List<PhuongPersonalProjectRole>>(list, HttpStatus.OK);
+    }
+	
+	
 	@RequestMapping(value = "/projectrole/", method = RequestMethod.POST)
     public ResponseEntity<?> createTransactionData(@RequestBody PhuongProjectRole phuongperson, UriComponentsBuilder ucBuilder) {
 		
-		phuongprojectrole.save(phuongperson);
+		PhuongProjectRole pro = phuongprojectrole.save(phuongperson);
         
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/api/projectrole/{id}").buildAndExpand(phuongperson.getId()).toUri());
-        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<PhuongProjectRole>(pro, HttpStatus.CREATED);
     }
 	
 	 // ------------------- Update a CardCenters ------------------------------------------------

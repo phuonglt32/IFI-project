@@ -1,5 +1,25 @@
-<form (submit)="createproject()" class="form-inline">
-    <label for="text">Name of role</label>
-    <input type="text" [(ngModel)]="newproject.name" class="form-control" name="namerole">
-  <button type="submit" class="btn btn-success">Add</button>
-</form>
+<div class="box box-primary">
+  <div class="box-body">
+    <form #projectform="ngForm" (submit)="createproject()">
+      <label for="text">Name of role</label>
+      <input type="text" required #name="ngModel" [(ngModel)]="newproject.name" class="form-control" pattern="^[^!<>?=+@{}_$%0-9]*[^!<>?=+@{}_$%0-9]*$" name="namerole">
+      <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+
+        <div *ngIf="name.errors.required">
+          Name is required.
+        </div>
+        <div *ngIf="name.errors.pattern">
+          Name is not contain special character or number.
+        </div>
+      </div>
+      <label for="text">Description</label>
+      <input type="text" #description="ngModel" [(ngModel)]="newproject.description" class="form-control" pattern="^[^!<>?=+@{}_$%0-9]*[^!<>?=+@{}_$%0-9]*$" name="description">
+      <div *ngIf="description.invalid && (description.dirty || description.touched)" class="alert alert-danger">
+        <div *ngIf="description.errors.pattern">
+          Description is not contain special character or number.
+        </div>
+      </div>
+      <button [disabled]="!projectform.form.valid" type="submit" class="btn btn-success">Add</button>
+    </form>
+  </div>
+</div>

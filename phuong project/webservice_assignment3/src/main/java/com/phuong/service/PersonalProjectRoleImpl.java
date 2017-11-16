@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.phuong.entities.PhuongPersonalProjectRole;
 import com.phuong.repository.PhuongPersonalProjectRoleRepo;
-import com.phuong.repository.PhuongPersonalRepo;
 
 @Service
 public class PersonalProjectRoleImpl implements PersonalProjectRoleService {
@@ -30,14 +29,12 @@ public class PersonalProjectRoleImpl implements PersonalProjectRoleService {
 
 	@Override
 	public PhuongPersonalProjectRole findOne(Integer id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
-		
+	public void deleteById(PhuongPersonalProjectRole id) {
+		personproject.delete(id);
 	}
 
 	@Override
@@ -48,6 +45,22 @@ public class PersonalProjectRoleImpl implements PersonalProjectRoleService {
 	@Override
 	public List<PhuongPersonalProjectRole> findprojectbyperson(Integer id) {
 		return personproject.findProjectRoleByIdPerson(id);
+	}
+	@Override
+	public List<PhuongPersonalProjectRole> findpersonbyporject(Integer id) {
+		return personproject.findpersonbyidproject(id);
+	}
+	
+	
+	@Override
+	public void deletebypersonid(Integer id) {
+		personproject.deletebypersonid(id);
+		
+	}
+	@Override
+	public void deletebyprojectid(Integer id) {
+		personproject.deletebyprojectid(id);
+		
 	}
 	
 }

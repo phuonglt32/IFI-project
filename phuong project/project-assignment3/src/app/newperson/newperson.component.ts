@@ -18,25 +18,26 @@ export class NewpersonComponent implements OnInit {
   allskill;
   selectedFiles: FileList;
   currentFileUpload: File;
+  url;
   progress: { percentage: number } = { percentage: 0 }
-  constructor(private personservice: Personservice,private router: Router,private uploadService: UploadFileService) {
-
-   }
+  constructor(private personservice: Personservice, private router: Router, private uploadService: UploadFileService) {
+    this.allskill = ['Java', 'Angular'];
+  }
 
   ngOnInit() {
-    this.newperson = new person(null,null,null,new Date(),null,null,null,null);
-    this.allskill = ['Java','Angular'];
+    this.newperson = new person(null, null, null, new Date(), null, "Java", null, null, null);
+
   }
 
 
-  createperson(){
+  createperson() {
     console.log(this.newperson);
 
     this.personservice.createperson(this.newperson).subscribe(
       data => {
         setTimeout(() => {
           alert("Insert success hehe");
-         },2000);
+        }, 1000);
 
         return false;
       },
@@ -44,21 +45,27 @@ export class NewpersonComponent implements OnInit {
         //console.error("insert Success");
         alert("Fail");
       }
-   );
-   this.uploadfile();
+    );
+    this.uploadfile();
 
-   setTimeout(() => {
-    this.router.navigate(['']);
-   },1000);
+    setTimeout(() => {
+      this.router.navigate(['/person']);
+    }, 1500);
   }
 
-  selectFile(e){
+  selectFile(e) {
     console.log(e.target.files[0].name);
     this.newperson.image = e.target.files[0].name;
     this.selectedFiles = e.target.files;
+    var reader = new FileReader();
+    reader.onload = (event: any) => {
+      this.url = event.target.result;
+    }
+
+    reader.readAsDataURL(e.target.files[0]);
   }
 
-  uploadfile(){
+  uploadfile() {
     this.currentFileUpload = this.selectedFiles.item(0)
     this.uploadService.pushFileToStorage(this.currentFileUpload).subscribe(event => {
       if (event.type === HttpEventType.UploadProgress) {
@@ -69,7 +76,7 @@ export class NewpersonComponent implements OnInit {
     })
   }
 
-  removeimage(){
+  removeimage() {
     this.newperson.image = null;
   }
 

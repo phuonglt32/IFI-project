@@ -2,10 +2,8 @@ package com.phuong.controller;
 
 import java.util.List;
 
-
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,9 +16,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.phuong.entities.PhuongPersonal;
 import com.phuong.entities.PhuongPersonalProjectRole;
-import com.phuong.entities.PhuongProjectRole;
 import com.phuong.service.PersonalProjectRoleImpl;
 import com.phuong.service.PhuongPersonalService;
+import com.phuong.service.StorageServiceImpl;
 
 
 @RestController
@@ -36,6 +34,9 @@ public class PhuongPersonalController {
 	@Autowired
 	PersonalProjectRoleImpl personprojectservecive;
 	
+	@Autowired
+	StorageServiceImpl storeservice;
+	
 	@RequestMapping(value = "/person/", method = RequestMethod.GET)
     public ResponseEntity<List<PhuongPersonal>> listAll() {
         List<PhuongPersonal> list = phuongservice.findAll();
@@ -45,13 +46,16 @@ public class PhuongPersonalController {
         return new ResponseEntity<List<PhuongPersonal>>(list, HttpStatus.OK);
     }
 	
+	//-----------------------find project role by person id------------------
 	@RequestMapping(value = "/person/{id}", method = RequestMethod.GET)
     public List<PhuongPersonalProjectRole> listprojectbyperson(@PathVariable("id") int id) {
 		List<PhuongPersonalProjectRole> list = personprojectservecive.findprojectbyperson(id);
         return list;
     }
 	
-	@RequestMapping(value = "/personbyid/{id}", method = RequestMethod.GET)
+	
+	//---------------------find person by id-----------------------
+	@RequestMapping(value = "/person/personbyid/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> personById(@PathVariable("id") int id) {
 		PhuongPersonal phuong =  phuongservice.findOne(id);
 		
@@ -63,6 +67,7 @@ public class PhuongPersonalController {
 			return new ResponseEntity<PhuongPersonal>(phuong,HttpStatus.OK);
 		}
     }
+	
 	
 	@RequestMapping(value = "/person/", method = RequestMethod.POST)
     public PhuongPersonal createTransactionData(@RequestBody PhuongPersonal phuongperson, UriComponentsBuilder ucBuilder) {
@@ -89,6 +94,8 @@ public class PhuongPersonalController {
     public ResponseEntity<?> deleteUser(@PathVariable("id") int id) {
        
     	PhuongPersonal phuong = phuongservice.findOne(id);
+    	storeservice.deleteWithname(phuong.getImage());
+    	storeservice.deleteWithnameResouce(phuong.getImage());
         
     	phuongservice.deleteById(id);
         return new ResponseEntity<PhuongPersonal>(HttpStatus.NO_CONTENT);
@@ -98,8 +105,34 @@ public class PhuongPersonalController {
  
     @RequestMapping(value = "/person/", method = RequestMethod.DELETE)
     public ResponseEntity<PhuongPersonal> deleteAll() {
- 
+    	
     	phuongservice.deleteAll();
         return new ResponseEntity<PhuongPersonal>(HttpStatus.NO_CONTENT);
+    }
+    
+    //-----------------------delete by ids----------------------------
+    @RequestMapping(value = "/person/del/",method = RequestMethod.POST)
+    public ResponseEntity<?> deletebyids(@RequestBody String list){
+    	list = list.replace("[", "").replace("]", "");
+    	String[] list1 = list.split(",");
+    	
+    	for(String w:list1) {
+    		personprojectservecive.deletebypersonid(Integer.parseInt(w));
+    		phuongservice.deleteById(Integer.parseInt(w));
+    	}
+    	return new ResponseEntity<PhuongPersonal>(HttpStatus.NO_CONTENT);
+    }
+    
+    @RequestMapping(value = "/person/personbyname/{name}", method = RequestMethod.GET)
+    public ResponseEntity<?> personByName(@PathVariable("name") String name) {
+		List<PhuongPersonal> phuong =  phuongservice.findByName(name);
+		
+		if(phuong == null) {
+			log.error("Error roi");
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}else {
+			log.info("OK nhe");
+			return new ResponseEntity<List<PhuongPersonal>>(phuong,HttpStatus.OK);
+		}
     }
 }

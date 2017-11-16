@@ -1,89 +1,107 @@
-<div class="container">
-  <h1>New Person</h1>
-  <form #personForm="ngForm" (submit)="createperson()">
-    <div class="row">
-      <div class="col-md-3 col-sm-6">
-        <label for="name">Name:</label>
-        <input type="text" id="name" required minlength="4" [(ngModel)]="newperson.name" name="name" class="form-control" #name="ngModel">
-        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+<div class="box box-success">
+  <div class="box-body">
+    <h1>New Person</h1>
+    <form #personForm="ngForm">
+      <div class="row">
+        <div class="col-md-3 col-sm-12 col-xs-12">
+          <label for="name">Name: <span class="required">*</span></label>
+          <input type="text" id="name" required minlength="4" [(ngModel)]="newperson.name" pattern="^[^!<>?=+@{}_$%0-9]*[^!<>?=+@{}_$%0-9]*$" name="name" class="form-control"
+            #name="ngModel">
+          <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
 
-          <div *ngIf="name.errors.required">
-            Name is required.
-          </div>
-          <div *ngIf="name.errors.minlength">
-            Name must be at least 4 characters long.
+            <div *ngIf="name.errors.required">
+              Name is required.
+            </div>
+            <div *ngIf="name.errors.minlength">
+              Name must be at least 4 characters long.
+            </div>
+            <div *ngIf="name.errors.pattern">
+              Name is not contain special characters or number
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <label for="phone">Phone:</label>
-        <input type="text" id="phone" name="phone" required minlength="11" maxlength="13" pattern="[0-9]*" #phone="ngModel" [(ngModel)]="newperson.phone"
-          class="form-control">
-        <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="alert alert-danger">
+        <div class="col-md-3 col-sm-12 col-xs-12">
+          <label for="phone">Phone: <span class="required">*</span></label>
+          <input type="text" id="phone" name="phone" required minlength="11" maxlength="13" pattern="\+{0,1}[0-9]*" #phone="ngModel"
+            [(ngModel)]="newperson.phone" class="form-control">
+          <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="alert alert-danger">
 
-          <div *ngIf="phone.errors.required">
-            Phone is required.
-          </div>
-          <div *ngIf="phone.errors.minlength">
-            phone must be at least 10 number long.
-          </div>
-          <div *ngIf="phone.errors.maxlength">
-            phone must be lower than 13 number long.
-          </div>
-          <div *ngIf="phone.errors.pattern">
-            phone must be number.
+            <div *ngIf="phone.errors.required">
+              Phone is required.
+            </div>
+            <div *ngIf="phone.errors.minlength">
+              phone must be at least 10 number long.
+            </div>
+            <div *ngIf="phone.errors.pattern">
+              phone must be number.
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <label for="dob">Date of birth</label>
-        <input type="date" [value]="newperson.dob | date:'yyyy-MM-dd'" (input)="newperson.dob = ($event.target.value)" class="form-control">
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <label for="sex">Sex:</label>
-        <br/>
-        <input type="radio" name="sex" value='male' required #sex="ngModel" [(ngModel)]="newperson.sex"> Male &nbsp;
-        <input type="radio" name="sex" value='female' required #sex="ngModel" [(ngModel)]="newperson.sex"> Female
-        <div *ngIf="sex.invalid && (sex.dirty || sex.touched)" class="alert alert-danger">
+        <div class="col-md-3 col-sm-12 col-xs-12">
+          <label for="dob">Date of birth: <span class="required">*</span></label>
+          <input type="date" [value]="newperson.dob | date:'yyyy-MM-dd'" (input)="newperson.dob = ($event.target.value)" class="form-control">
+        </div>
+        <div class="col-md-3 col-sm-12 col-xs-12">
+          <label for="sex">Sex: <span class="required">*</span></label>
+          <br/>
+          <input type="radio" name="sex" value='male' required #sex="ngModel" [(ngModel)]="newperson.sex"> Male &nbsp;
+          <input type="radio" name="sex" value='female' required #sex="ngModel" [(ngModel)]="newperson.sex"> Female
+          <div *ngIf="sex.invalid && (sex.dirty || sex.touched)" class="alert alert-success">
 
-          <div *ngIf="sex.errors.required">
-            This field is requied.
+            <div *ngIf="sex.errors.required">
+              This field is requied.
+            </div>
           </div>
         </div>
-      </div>
 
-    </div>
-    <div class="row" style="padding-top: 20px">
-      <div class="col-md-3 col-sm-6">
-        <label for="skill">Skill</label>
-        <select class="form-control" [(ngModel)]="newperson.skill" name="skill">
-          <option *ngFor="let skill of allskill" value="{{skill}}" [ngValue]="newperson.skill">{{skill}}</option>
-        </select>
       </div>
-      <div class="col-md-8 col-sm-6">
-        <label for="note">Note:</label>
-        <textarea class="form-control" [(ngModel)]="newperson.note" name="age" id="note"></textarea>
-      </div>
-    </div>
-    <div class="row" style="padding: 20px 0px">
-      <div class="col-md-3 col-sm-6">
-        <label for="file">Avatar</label>
-        <label class="btn btn-default">
-          <input type="file" name="file" accept="image/*" (change)="selectFile($event)">
-        </label>
-        <div *ngIf="currentFileUpload" class="progress">
-          <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" attr.aria-valuenow="{{progress.percentage}}"
-            aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width:progress.percentage+'%'}">
-            {{progress.percentage}}%</div>
+      <div class="row" style="padding-top: 20px">
+        <div class="col-md-3 col-sm-12 col-xs-12">
+          <label for="skill">Skill: <span class="required">*</span></label>
+          <select class="form-control" [(ngModel)]="newperson.skill" name="skill">
+            <option *ngFor="let skill of allskill" [ngValue]="skill">{{skill}}</option>
+          </select>
+        </div>
+        <div class="col-md-3 col-sm-12 col-xs-12">
+          <label for="email">Email: <span class="required">*</span></label>
+          <input type="email" name="email" required id="email" #email="ngModel" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
+            [(ngModel)]="newperson.email" class="form-control">
+          <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+
+            <div *ngIf="email.errors.required">
+              This field is requied.
+            </div>
+            <div *ngIf="email.errors.pattern">
+              Email should be like abc@def.com
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-5 col-sm-12 col-xs-12">
+          <label for="note">Note:</label>
+          <textarea class="form-control" [(ngModel)]="newperson.note" name="age" id="note"></textarea>
         </div>
       </div>
-      <div class="col-md-3 col-sm-6" *ngIf="newperson.image">
-        <label for="">Đã chọn</label>
-        <p>{{newperson.image}}
-          <button (click)="removeimage()" class="btn btn-xs btn-default" title="remove">x</button>
-        </p>
+      <div class="row" style="padding: 20px 0px">
+        <div class="col-md-3 col-sm-12 col-xs-12">
+          <label for="file">Avatar: </label>
+          <label class="btn btn-default">
+            <input type="file" name="file" accept="image/*" (change)="selectFile($event)">
+          </label>
+          <div *ngIf="currentFileUpload" class="progress">
+            <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" attr.aria-valuenow="{{progress.percentage}}"
+              aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width:progress.percentage+'%'}">
+              {{progress.percentage}}%</div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-12 col-xs-12" *ngIf="newperson.image">
+          <img [src]="url" height="100px">
+          <button (click)="removeimage()" class="btn btn-xs btn-danger" title="remove"><span class="glyphicon glyphicon-remove"></span></button>
+
+        </div>
       </div>
-    </div>
-    <button type="submit" class="btn btn-success" [disabled]="!personForm.form.valid">Add</button>
-  </form>
+      <button (click)="createperson()" type="button" class="btn btn-success" [disabled]="!personForm.form.valid">Add</button>
+    </form>
+
+  </div>
 </div>

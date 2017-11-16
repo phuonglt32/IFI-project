@@ -18,7 +18,7 @@ export class NewprojectComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.newproject = new projectrole(null,"");
+    this.newproject = new projectrole(null,null,null);
   }
   createproject(){
     console.log(this.newproject);

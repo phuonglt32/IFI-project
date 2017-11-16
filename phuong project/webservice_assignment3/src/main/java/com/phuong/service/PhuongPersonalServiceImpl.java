@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.phuong.entities.PhuongPersonal;
 import com.phuong.entities.PhuongProjectRole;
 import com.phuong.repository.PhuongPersonalRepo;
-import com.phuong.repository.PhuongProjectRoleRepo;
 
 @Service
 public class PhuongPersonalServiceImpl implements PhuongPersonalService {
@@ -52,6 +51,17 @@ public class PhuongPersonalServiceImpl implements PhuongPersonalService {
 	@Override
 	public List<PhuongProjectRole> findbypersonal(Integer id) {
 		return phuongpersonalrepo.findByIdrole(id);
+	}
+
+	@Override
+	public void deleteByIds(List<PhuongPersonal> list) {
+		phuongpersonalrepo.deleteInBatch(list);
+		
+	}
+
+	@Override
+	public List<PhuongPersonal> findByName(String name) {
+		return phuongpersonalrepo.findByName(name);
 	}
 	
 }

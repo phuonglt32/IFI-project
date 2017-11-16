@@ -3,14 +3,17 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import { projectrole } from "../models/projectrole";
+import { person } from '../models/person';
 
 @Injectable()
 export class Projectservice {
    constructor(private http: Http) {
    }
 
+   url = "http://localhost:8080/api/projectrole/";
+
    getprojectrole(): Observable<projectrole[]> {
-    return this.http.get("http://localhost:8080/api/projectrole/")
+    return this.http.get(this.url)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
 
@@ -22,11 +25,19 @@ export class Projectservice {
     let body = JSON.stringify(projectrole);
     console.log(body);
 
-    return this.http.post("http://localhost:8080/api/projectrole/", body, options ).map((res: Response) => res.json());
+    return this.http.post(this.url, body, options ).map((res: Response) => res.json());
   }
 
+  getpersonbyprojectid(id): Observable<person[]>{
+    console.log(this.url+id);
+    return this.http.get(this.url+id)
+    .map((res: Response) => res.json())
+    .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+
   deleteprojectrole(person) {
-    return this.http.delete('http://localhost:8080/api/projectrole/' + person.id);
+    return this.http.delete(this.url + person.id);
   }
 
 }

@@ -1,0 +1,138 @@
+<div class="box box-primary">
+  <div class="box-body">
+    <h1>Register role
+      <button type="button" (click)="add()" class="btn btn-default" data-toggle="modal" data-target="#modal-default">
+        <span class="glyphicon glyphicon-plus"></span>
+      </button>
+    </h1>
+    <div class="table-responsive">
+      <table class="table table-hover table-striped table-bordered table-center">
+        <tr>
+          <th style="width: 250px">
+            Person Name
+          </th>
+          <th>
+            Role
+          </th>
+          <th>
+            Project Name
+          </th>
+          <th>
+            Start date
+          </th>
+          <th>
+            End date
+          </th>
+          <th>
+            Action
+          </th>
+        </tr>
+        <tr *ngFor="let per of personprojects | async | paginate: { itemsPerPage: 10, currentPage: p }">
+          <td>
+            {{per.phuongPersonal.name}}
+          </td>
+          <td>
+            {{per.phuongProjectRole.name}}
+          </td>
+          <td>
+            {{per.projectName}}
+          </td>
+          <td>
+            {{per.startDate}}
+          </td>
+          <td>
+            {{per.endDate}}
+          </td>
+          <td>
+            <button (click)="update(per)" type="button" class="btn btn-xs btn-warning" title="edit" data-toggle="modal" data-target="#modal-default">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </button>
+            <button (click)="delete(per)" type="button" class="btn btn-xs btn-danger" title="remove">
+              <span class="glyphicon glyphicon-remove"></span>
+            </button>
+          </td>
+        </tr>
+      </table>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-default" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+        <h4 class="modal-title">Register Role</h4>
+      </div>
+      <div class="modal-body">
+        <form #register="ngForm" class="form-group">
+          <div class="row">
+            <div class="col-sm-6">
+              <label>Person Name</label>
+              <select class="form-control" required [(ngModel)]="personproject.id.idPersonal" name="personid" #idperson="ngModel" [disabled]="checkisupdate"
+                (change)="Checkisexist()">
+                <option *ngFor="let person of persons | async" [ngValue]="person.id">{{person.name}}</option>
+              </select>
+              <div *ngIf="idperson.invalid && (idperson.dirty || idperson.touched)" class="alert alert-danger">
+
+                <div *ngIf="idperson.errors.required">
+                  This field is requied.
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <label>Project Role</label>
+              <select class="form-control" required [(ngModel)]="personproject.id.idProjectRole" name="projectid" #idproject="ngModel"
+                [disabled]="checkisupdate" (change)="Checkisexist()">
+                <option *ngFor="let project of projects | async" [ngValue]="project.id">{{project.name}}</option>
+              </select>
+              <div *ngIf="idproject.invalid && (idproject.dirty || idproject.touched)" class="alert alert-danger">
+
+                <div *ngIf="idproject.errors.required">
+                  This field is requied.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <label for="name">Project Name:</label>
+              <input type="text" id="name" required [(ngModel)]="personproject.projectName" name="name" class="form-control" #name="ngModel"
+                pattern="^[^!<>?=+@{}_$%]*[^!<>?=+@{}_$%]*$">
+              <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+
+                <div *ngIf="name.errors.required">
+                  Name is required.
+                </div>
+                <div *ngIf="name.errors.pattern">
+                  Name is contain special charater or number
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <label for="name">Start Date</label>
+              <input type="date" name="startdate" (input)="personproject.startDate = ($event.target.value)" [value]="personproject.startDate | date:'yyyy-MM-dd'"
+                class="form-control">
+            </div>
+            <div class="col-sm-6">
+              <label for="name">End Date</label>
+              <input type="date" (input)="personproject.endDate = ($event.target.value)" [value]="personproject.endDate | date:'yyyy-MM-dd'"
+                class="form-control">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+        <button type="button" [disabled]="!register.form.valid || checkisexcist" class="btn btn-primary" (click)="create()">Save</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

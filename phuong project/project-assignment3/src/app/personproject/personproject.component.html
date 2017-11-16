@@ -1,31 +1,57 @@
-<h1>Project Role of person
-  <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#myModal">Add role</button>
-</h1>
-<div class="table-responsive">
-  <table class="table table-hover table-striped table-bordered table-center">
-    <tr>
-      <th>
-        Id project role
-      </th>
-      <th>
-        Name of project
-      </th>
-      <th>
-        Name project role
-      </th>
-    </tr>
-    <tr *ngFor="let project of projectroles | async">
-      <td>
-        {{project.phuongProjectRole.id}}
-      </td>
-      <td>
-        {{project.projectNam}}
-      </td>
-      <td>
-        {{project.phuongProjectRole.name}}
-      </td>
-    </tr>
-  </table>
+<div class="box box-success">
+  <div class="box-body">
+    <h1>Project Role of person
+    </h1>
+    <div class="table-responsive">
+      <table class="table table-hover table-striped table-bordered table-center">
+        <tr>
+          <th>
+            Person name
+          </th>
+          <th>
+            Project Name
+          </th>
+          <th>
+            Role
+          </th>
+          <th>
+            Project start date
+          </th>
+          <th>
+            Project end date
+          </th>
+          <th>
+            Action
+          </th>
+        </tr>
+        <tr *ngFor="let project of projectroles | async">
+          <td>
+            {{project.phuongPersonal.name}}
+          </td>
+          <td>
+            {{project.projectName}}
+          </td>
+          <td>
+            {{project.phuongProjectRole.name}}
+          </td>
+          <td>
+            {{project.startDate}}
+          </td>
+          <td>
+            {{project.endDate}}
+          </td>
+          <td>
+            <button (click)="update(project)" type="button" class="btn btn-xs btn-warning" title="edit" data-toggle="modal" data-target="#myModal">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </button>
+            <button (click)="delete(project)" type="button" class="btn btn-xs btn-danger" title="remove">
+              <span class="glyphicon glyphicon-remove"></span>
+            </button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </div>
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -41,6 +67,15 @@
         <div class="modal-body">
           <label for="projectname">Project Name</label>
           <input class="form-control" [(ngModel)]="newpersonproject.projectNam" type="text" name="projectname" #projectname>
+          <div class="row">
+            <div class="col-sm-6">
+              <label for="dob">Project start date</label>
+            </div>
+            <div class="col-sm-6">
+              <label for="dob">Project end date</label>
+              <input type="date" class="form-control">
+            </div>
+          </div>
           <label>Project role</label>
           <select class="form-control" [(ngModel)]="newpersonproject.id.idProjectRole" name="idProjectRole">
             <option *ngFor="let projectrole of allprojectroles | async" [ngValue]="projectrole.id">{{projectrole.name}}</option>

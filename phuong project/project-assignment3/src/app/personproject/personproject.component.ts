@@ -20,18 +20,20 @@ export class PersonprojectComponent implements OnInit {
   id: number;
   person;
   newpersonproject: personproject;
+  nameperson;
   constructor(private perservice: Personservice,private route: ActivatedRoute,private projectservice: Projectservice,private personproject: Personprojectservice) {
     this.id = parseInt(route.snapshot.params['id']);
     this.allprojectroles = projectservice.getprojectrole();
-
-    //console.log(this.person.name);
+    this.allprojectroles.subscribe(val=>{
+      console.log(val[0]);
+    })
 
    }
 
   ngOnInit() {
     this.projectroles = this.perservice.projectByPersonID(this.id);
     //this.person = this.perservice.getpersonbyId(this.id);
-    this.newpersonproject = new personproject({idPersonal:this.id,idProjectRole:null},"");
+    this.newpersonproject = new personproject({idPersonal:this.id,idProjectRole:null},"",null,null);
 
   }
 

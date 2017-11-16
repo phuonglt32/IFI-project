@@ -1,179 +1,225 @@
-<h1>Person
-  <a routerLink="newperson" class="btn btn-sm btn-success">+</a>
-</h1>
-<div class="table-responsive">
-  <table class="table table-hover table-striped table-bordered table-center">
-    <tr>
-      <th>
-        Avatar
-      </th>
-      <th>
-        Id Person
-      </th>
-      <th>
-        Name Person
-      </th>
-      <th>
-        Phone
-      </th>
-      <th>
-        sex
-      </th>
-      <th>
-        Date of brith
-      </th>
-      <th>
-        Skill
-      </th>
-      <th>
-        Note
-      </th>
-      <th>
-        Action
-      </th>
-    </tr>
-    <tr *ngFor="let person of persons | async">
-      <td>
-        <img style="width: 50px;" src="/assets/image/{{person.image}}" />
-      </td>
-      <td>
-        {{person.id}}
-      </td>
-      <td>
-        {{person.name}}
-      </td>
-      <td>
-        {{person.phone}}
-      </td>
-      <td *ngIf="person.sex == 'male'">
-        Male
-      </td>
-      <td *ngIf="person.sex == 'female'">
-        Female
-      </td>
-      <td>
-        {{person.dob}}
-      </td>
-      <td>
-        {{person.skill}}
-      </td>
-      <td>
-        {{person.note}}
-      </td>
-      <td>
-        <button (click)="update(person)" type="button" class="btn btn-xs btn-warning" title="edit" data-toggle="modal" data-target="#myModal">
-          <span class="glyphicon glyphicon-pencil"></span>
-        </button>
-        <button (click)="delete(person)" type="button" class="btn btn-xs btn-danger" title="remove">
-          <span class="glyphicon glyphicon-remove"></span>
-        </button>
-        <a [routerLink]="['/personproject', person.id]" type="button" class="btn btn-xs btn-primary" title="project role">
-          <span class="glyphicon glyphicon-th"></span>
+<div class="box box-success">
+  <div class="box-header">
+    <div class="col-sm-4">
+      <h1>Person
+        <a routerLink="newperson" class="btn btn-sm btn-success">
+          <span class="glyphicon glyphicon-plus-sign"> New</span>
         </a>
-      </td>
-    </tr>
-  </table>
-</div>
-
-<div *ngIf="check" id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Edit Person</h4>
-      </div>
-      <div class="modal-body">
-        <form #personForm="ngForm" >
-          <div class="row">
-            <div class="col-md-6 col-sm-6">
-              <label for="name">Name:</label>
-              <input type="text" id="name" required minlength="4" [(ngModel)]="newperson.name" name="name" class="form-control" #name="ngModel">
-              <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
-
-                <div *ngIf="name.errors.required">
-                  Name is required.
-                </div>
-                <div *ngIf="name.errors.minlength">
-                  Name must be at least 4 characters long.
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-sm-6">
-              <label for="phone">Phone:</label>
-              <input type="text" id="phone" name="phone" required minlength="11" maxlength="13" pattern="[0-9]*" #phone="ngModel" [(ngModel)]="newperson.phone"
-                class="form-control">
-              <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="alert alert-danger">
-
-                <div *ngIf="phone.errors.required">
-                  Phone is required.
-                </div>
-                <div *ngIf="phone.errors.minlength">
-                  phone must be at least 10 number long.
-                </div>
-                <div *ngIf="phone.errors.maxlength">
-                  phone must be lower than 13 number long.
-                </div>
-                <div *ngIf="phone.errors.pattern">
-                  phone must be number.
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-sm-6">
-              <label for="dob">Date of birth</label>
-              <input type="date" [value]="newperson.dob | date:'yyyy-MM-dd'" (input)="newperson.dob = ($event.target.value)" class="form-control">
-            </div>
-            <div class="col-md-6 col-sm-6">
-              <label for="sex">Sex:</label>
-              <br/>
-              <input type="radio" name="sex" value='male' required #sex="ngModel" [(ngModel)]="newperson.sex"> Male &nbsp;
-              <input type="radio" name="sex" value='female' required #sex="ngModel" [(ngModel)]="newperson.sex"> Female
-              <div *ngIf="sex.invalid && (sex.dirty || sex.touched)" class="alert alert-danger">
-
-                <div *ngIf="sex.errors.required">
-                  This field is requied.
-                </div>
-              </div>
-            </div>
-
-          </div>
-          <div class="row" style="padding-top: 20px">
-            <div class="col-md-6 col-sm-6">
-              <label for="skill">Skill</label>
-              <select class="form-control" [(ngModel)]="newperson.skill" name="skill">
-                <option *ngFor="let skill of allskill" value="{{skill}}" [ngValue]="newperson.skill">{{skill}}</option>
-              </select>
-            </div>
-            <div class="col-md-6 col-sm-6">
-              <label for="note">Note:</label>
-              <textarea class="form-control" [(ngModel)]="newperson.note" name="age" id="note"></textarea>
-            </div>
-          </div>
-          <div class="row" style="padding: 20px 0px">
-            <div class="col-md-6 col-sm-6">
-              <label for="file">Avatar</label>
-              <label class="btn btn-default">
-                <input type="file" name="file" accept="image/*" (change)="selectFile($event)">
-              </label>
-              <div *ngIf="currentFileUpload" class="progress">
-                <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" attr.aria-valuenow="{{progress.percentage}}"
-                  aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width:progress.percentage+'%'}">
-                  {{progress.percentage}}%</div>
-              </div>
-            </div>
-            <div *ngIf="newperson.image" class="col-md-6 col-sm-6">
-              <label for="">Đã chọn</label>
-                <p>{{newperson.image}} <button (click)="removeimage()" class="btn btn-xs btn-default" title="remove">x</button></p>
-            </div>
-          </div>
-          <button type="button" (click)="updateperson()" class="btn btn-success" [disabled]="!personForm.form.valid">Add</button>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button class="btn btn-danger btn-sm" (click)="deleteselected()">
+          <span class="glyphicon glyphicon-remove-sign"> Delete</span>
+        </button>
+      </h1>
+    </div>
+    <div class="col-sm-4 hidden-xs"></div>
+    <div class="col-sm-4">
+      <div class="pull-right">
+        <div class="input-group input-group-sm">
+          <input type="text" [(ngModel)]="name" class="form-control" (ngModelChange)="findbyname()">
+          <span class="input-group-btn">
+            <button type="button" (click)="findbyname()" class="btn btn-info btn-flat">
+              <i class="fa fa-search"></i>
+            </button>
+          </span>
+        </div>
       </div>
     </div>
+  </div>
+  <div class="box-body">
 
+    <div class="table-responsive">
+      <table class="table table-hover table-striped table-bordered table-center" id="bang1">
+        <tr>
+          <th style="width: 20px;">
+            STT
+          </th>
+          <th style="width: 60px;">
+            Avatar
+          </th>
+          <th style="width: 20px;">
+            Id
+          </th>
+          <th>
+            Name Person
+          </th>
+          <th>
+            Phone
+          </th>
+          <th style="width: 60px;">
+            Sex
+          </th>
+          <th>
+            Email
+          </th>
+          <th>
+            Date of brith
+          </th>
+          <th>
+            Skill
+          </th>
+          <th>
+            Note
+          </th>
+          <th>
+            Action
+          </th>
+        </tr>
+        <tr *ngFor="let person of persons | async | paginate: { itemsPerPage: 10, currentPage: p }" [class.highlighted]="isPersonSelected(person.id)">
+          <td>
+            <input type="checkbox" (change)="checkperson($event,person.id)" [checked]="isPersonSelected(person.id)">
+          </td>
+          <td>
+            <img *ngIf="person.image" style="width: 50px;" src="http://localhost:8080/files/{{person.image}}" />
+          </td>
+          <td>
+            {{person.id}}
+          </td>
+          <td>
+            {{person.name}}
+          </td>
+          <td>
+            {{person.phone}}
+          </td>
+          <td *ngIf="person.sex == 'male'">
+            Male
+          </td>
+          <td *ngIf="person.sex == 'female'">
+            Female
+          </td>
+          <td>
+            {{person.email}}
+          </td>
+          <td>
+            {{person.dob}}
+          </td>
+          <td>
+            {{person.skill}}
+          </td>
+          <td>
+            {{person.note}}
+          </td>
+          <td>
+            <button (click)="update(person)" type="button" class="btn btn-xs btn-warning" title="edit" data-toggle="modal" data-target="#myModal">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </button>
+            <button (click)="delete(person)" type="button" class="btn btn-xs btn-danger" title="remove">
+              <span class="glyphicon glyphicon-remove"></span>
+            </button>
+            <a [routerLink]="['/personproject', person.id]" type="button" class="btn btn-xs btn-primary" title="project role">
+              <span class="glyphicon glyphicon-th"></span>
+            </a>
+          </td>
+        </tr>
+      </table>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+
+    <div *ngIf="check" id="myModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Edit Person</h4>
+          </div>
+          <div class="modal-body">
+            <form #personForm="ngForm">
+              <div class="row">
+                <div class="col-md-6 col-sm-6">
+                  <label for="name">Name:</label>
+                  <input type="text" id="name" required minlength="4" [(ngModel)]="newperson.name" name="name" pattern="^[^!<>?=+@{}_$%0-9]*[^!<>?=+@{}_$%0-9]*$"
+                    class="form-control" #name="ngModel">
+                  <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-xs alert-danger">
+
+                    <div *ngIf="name.errors.required">
+                      Name is required.
+                    </div>
+                    <div *ngIf="name.errors.minlength">
+                      Name must be at least 4 characters long.
+                    </div>
+                    <div *ngIf="name.errors.pattern">
+                      Name is not contain special characters and number
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                  <label for="phone">Phone:</label>
+                  <input type="text" id="phone" name="phone" required minlength="11" maxlength="13" pattern="\+{0,1}[0-9]*" #phone="ngModel"
+                    [(ngModel)]="newperson.phone" class="form-control">
+                  <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="alert alert-danger">
+
+                    <div *ngIf="phone.errors.required">
+                      Phone is required.
+                    </div>
+                    <div *ngIf="phone.errors.minlength">
+                      phone must be at least 10 number long.
+                    </div>
+                    <div *ngIf="phone.errors.maxlength">
+                      phone must be lower than 13 number long.
+                    </div>
+                    <div *ngIf="phone.errors.pattern">
+                      phone must be number.
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                  <label for="dob">Date of birth</label>
+                  <input type="date" [value]="newperson.dob | date:'yyyy-MM-dd'" (input)="newperson.dob = ($event.target.value)" class="form-control">
+                </div>
+                <div class="col-md-6 col-sm-6">
+                  <label for="sex">Sex:</label>
+                  <br/>
+                  <input type="radio" name="sex" value='male' required #sex="ngModel" [(ngModel)]="newperson.sex"> Male &nbsp;
+                  <input type="radio" name="sex" value='female' required #sex="ngModel" [(ngModel)]="newperson.sex"> Female
+                  <div *ngIf="sex.invalid && (sex.dirty || sex.touched)" class="alert alert-danger">
+
+                    <div *ngIf="sex.errors.required">
+                      This field is requied.
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="row" style="padding-top: 20px">
+                <div class="col-md-6 col-sm-6">
+                  <label for="skill">Skill</label>
+                  <select class="form-control" [(ngModel)]="newperson.skill" name="skill">
+                    <option *ngFor="let skill of allskill" [ngValue]="skill">{{skill}}</option>
+                  </select>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                  <label for="note">Note:</label>
+                  <textarea class="form-control" [(ngModel)]="newperson.note" name="age" id="note"></textarea>
+                </div>
+              </div>
+              <div class="row" style="padding: 20px 0px">
+                <div class="col-md-6 col-sm-6">
+                  <label for="file">Avatar</label>
+                  <label class="btn btn-default">
+                    <input type="file" name="file" accept="image/*" (change)="selectFile($event)">
+                  </label>
+                  <div *ngIf="currentFileUpload" class="progress">
+                    <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" attr.aria-valuenow="{{progress.percentage}}"
+                      aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width:progress.percentage+'%'}">
+                      {{progress.percentage}}%</div>
+                  </div>
+                </div>
+                <div *ngIf="newperson.image" class="col-md-6 col-sm-6">
+                  <label for="">Đã chọn</label>
+                  <p>{{newperson.image}}
+                    <button (click)="removeimage()" class="btn btn-xs btn-default" title="remove">x</button>
+                  </p>
+                </div>
+              </div>
+              <button type="button" (click)="updateperson()" class="btn btn-success" [disabled]="!personForm.form.valid">Update</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div>
 </div>

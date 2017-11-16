@@ -21,6 +21,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "phuong_project_role", catalog = "fresher")
 public class PhuongProjectRole implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String description;
 	private String name;

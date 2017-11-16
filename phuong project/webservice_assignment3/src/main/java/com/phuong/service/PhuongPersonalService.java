@@ -17,4 +17,8 @@ public interface PhuongPersonalService {
 	void deleteAll();
 	
 	List<PhuongProjectRole> findbypersonal(Integer id);
+	
+	void deleteByIds(List<PhuongPersonal> list);
+	
+	List<PhuongPersonal> findByName(String name);
 }
